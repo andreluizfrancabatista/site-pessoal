@@ -1,0 +1,182 @@
+/* =====================================================
+   Clean Dev + Data Science
+   Visual leve, moderno e orientado a dados
+   ===================================================== */
+
+/* -------------------------
+   Design System
+-------------------------- */
+:root {
+    --bg-color: #ffffff;
+    --surface-color: #f8fafc;
+    --card-color: #ffffff;
+
+    --text-color: #0f172a;
+    --text-muted: #475569;
+
+    --primary-color: #0284c7;   /* azul data */
+    --secondary-color: #06b6d4; /* ciano */
+    --accent-color: #22c55e;    /* verde ciência */
+
+    --border-color: #e2e8f0;
+
+    --font-sans: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --radius: 12px;
+    --shadow-soft: 0 6px 16px rgba(15, 23, 42, 0.06);
+    --shadow-light: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+/* -------------------------
+   Reset
+-------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------------
+   Base
+-------------------------- */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* -------------------------
+   Container
+-------------------------- */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+/* -------------------------
+   Header
+-------------------------- */
+header {
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-size: 2.3rem;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--text-color);
+}
+
+.subtitle {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* -------------------------
+   Seções
+-------------------------- */
+main section {
+    background-color: var(--card-color);
+    padding: 2.2rem;
+    margin-bottom: 2.2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
+}
+
+main h2,
+main h3 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+main h2 {
+    font-size: 1.5rem;
+}
+
+main h3 {
+    font-size: 1.2rem;
+}
+
+main p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+/* -------------------------
+   Status
+-------------------------- */
+.status {
+    display: flex;
+    justify-content: center;
+}
+
+.status-badge {
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    background-color: #ecfeff;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid #bae6fd;
+}
+
+/* -------------------------
+   Tech Stack
+-------------------------- */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.9rem;
+    margin-top: 1.2rem;
+}
+
+.tech-item {
+    background-color: var(--surface-color);
+    padding: 0.65rem 0.9rem;
+    text-align: center;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tech-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* -------------------------
+   Footer
+-------------------------- */
+footer {
+    margin-top: 3.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* -------------------------
+   Responsividade
+-------------------------- */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.9rem;
+    }
+
+    .container {
+        padding: 2.2rem 1.2rem;
+    }
+
+    main section {
+        padding: 1.6rem;
+    }
+}
