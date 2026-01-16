@@ -1,0 +1,79 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Permite executar manualmente
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🚚 Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: 📝 Display Deploy Info
+      run: |
+        echo "🚀 Iniciando deploy para andrebatista.dev.br"
+        echo "📦 Branch: ${{ github.ref_name }}"
+        echo "👤 Author: ${{ github.actor }}"
+        echo "📅 Timestamp: $(date)"
+    
+    - name: 🔑 Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+    
+    - name: 🧪 Test SSH Connection
+      run: |
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo '✅ SSH connection successful'"
+    
+    - name: 🗑️ Clean Remote Directory
+      run: |
+        ssh -i ~/.ssh/deploy_key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          rm -rf /var/www/andre-batista/public/*
+          echo '🗑️ Remote directory cleaned'
+        "
+    
+    - name: 📤 Deploy Files to VPS
+      run: |
+        rsync -avz --delete \
+          -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='README.md' \
+          --exclude='.gitignore' \
+          ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/andre-batista/public/
+        echo '📤 Files transferred successfully'
+    
+    - name: 🔧 Set Permissions
+      run: |
+        ssh -i ~/.ssh/deploy_key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          chown -R www-data:www-data /var/www/andre-batista/public/
+          find /var/www/andre-batista/public/ -type d -exec chmod 755 {} \;
+          find /var/www/andre-batista/public/ -type f -exec chmod 644 {} \;
+          echo '🔧 Permissions set correctly'
+        "
+    
+    - name: ✅ Verify Deployment
+      run: |
+        ssh -i ~/.ssh/deploy_key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          echo '📊 Deployment Summary:'
+          echo '   Files deployed to: /var/www/andre-batista/public/'
+          echo '   Total files: \$(find /var/www/andre-batista/public/ -type f | wc -l)'
+          echo '   Disk usage: \$(du -sh /var/www/andre-batista/public/ | cut -f1)'
+          echo '✅ Deployment completed successfully!'
+        "
+    
+    - name: 🌐 Display Access URL
+      run: |
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "✅ DEPLOY CONCLUÍDO COM SUCESSO!"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "🌐 Acesse: https://andrebatista.dev.br"
+        echo "📅 Deploy: $(date)"
+        echo "👤 Por: ${{ github.actor }}"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
